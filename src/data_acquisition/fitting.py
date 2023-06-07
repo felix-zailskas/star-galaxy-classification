@@ -2,11 +2,11 @@ from astropy.coordinates import SkyCoord
 from astropy.io import fits
 from astropy.wcs import WCS
 
-r_file = "/Users/felixzailskas/Code/star-galaxy-classification/src/data_acquisition/frame-r-008162-6-0080.fits.bz2"
-g_file = "/Users/felixzailskas/Code/star-galaxy-classification/src/data_acquisition/frame-g-008162-6-0080.fits.bz2"
-i_file = "/Users/felixzailskas/Code/star-galaxy-classification/src/data_acquisition/frame-i-008162-6-0080.fits.bz2"
-u_file = "/Users/felixzailskas/Code/star-galaxy-classification/src/data_acquisition/frame-u-008162-6-0080.fits.bz2"
-z_file = "/Users/felixzailskas/Code/star-galaxy-classification/src/data_acquisition/frame-z-008162-6-0080.fits.bz2"
+r_file = "../data/frame-r-008162-6-0080.fits.bz2"
+g_file = "./data/frame-g-008162-6-0080.fits.bz2"
+i_file = "./data/frame-i-008162-6-0080.fits.bz2"
+u_file = "./data/frame-u-008162-6-0080.fits.bz2"
+z_file = "./data/frame-z-008162-6-0080.fits.bz2"
 
 files = [r_file, g_file, i_file, u_file, z_file]
 
