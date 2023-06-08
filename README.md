@@ -1,5 +1,9 @@
 # star-galaxy-classification
 
+
+## Dataset
+Information about the dataset can be found here: https://github.com/damslab/datasets/tree/master/stars
+
 ## Creating the Environment
 
 To create the virtual environment in this project you must have `pipenv` installed on your machine. Then run the following commands:
