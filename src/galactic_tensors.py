@@ -6,22 +6,9 @@ import numpy as np
 from queue import Queue
 
 galaxy_file = "../data/frame-r-008162-6-0080.fits.bz2"
-star_file = "./data/frame-g-008162-6-0080.fits.bz2"
+star_file = "../data/frame-g-008162-6-0080.fits.bz2"
 
-galaxy_data = fits.open(galaxy_file)
-star_data = fits.open(galaxy_file)
-
-galaxy = galaxy_data[0].data
-star = star_data[0].data
-
-galaxy_tensor_improved = np.where(galaxy < 1, 0, galaxy)
-
-galaxy_tensor_improvedd = np.where(galaxy_tensor_improved >= 1, 266, galaxy_tensor_improved)
-
-
-plt.imshow(galaxy_tensor_improved, cmap="gray")
-plt.title("Original")
-plt.show()
+galaxy_data, star_data = fits.open(galaxy_file)[0].data, fits.open(star_file)[0].data
 
 def reduce_to_tensor(image_array):
 
@@ -73,5 +60,6 @@ def reduce_to_tensor(image_array):
             result.append(coordinates)
 
     return np.array(result)
+
 
 
