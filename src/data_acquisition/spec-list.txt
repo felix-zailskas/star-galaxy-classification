@@ -1,6 +1,6 @@
-frame-r-008162-6-0080.fits.bz2
-frame-g-008162-6-0080.fits.bz2
-frame-i-008162-6-0080.fits.bz2
-frame-u-008162-6-0080.fits.bz2
-frame-z-008162-6-0080.fits.bz2
-frame-irg-008162-6-0080.jpg
+frame-r-001006-6-0011.fits.bz2
+frame-g-001006-6-0011.fits.bz2
+frame-i-001006-6-0011.fits.bz2
+frame-u-001006-6-0011.fits.bz2
+frame-z-001006-6-0011.fits.bz2
+frame-irg-001006-6-0011.jpg
