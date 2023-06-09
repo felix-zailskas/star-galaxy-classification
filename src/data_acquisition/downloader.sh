@@ -2,9 +2,9 @@
 # image_dir="8162/6/"
 # image_name="008162-6-0080"
 # star_galaxy_name="008162-6"
-image_dir="1006/6/"
-image_name="001006-6-0011"
-star_galaxy_name="001006-6"
+image_dir="3918/3/"
+image_name="003918-3-0213"
+star_galaxy_name="003918-3"
 data_dir="../../data/$image_name"
 
 mkdir $data_dir
