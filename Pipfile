@@ -16,6 +16,10 @@ matplotlib = "*"
 jupyter = "*"
 astropy = "*"
 opencv-python = '*'
+torch = "*"
+torchvision = "*"
+torchinfo = "*"
+scipy = "*"
 
 [requires]
 python_version = "3.10"
