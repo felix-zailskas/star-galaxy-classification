@@ -41,3 +41,11 @@ The following hooks are registered in this Project:
 <b>isort:</b> isort is a Python utility / library to sort imports alphabetically, and automatically separated into sections and by type
 </li>
 </ul>
+
+
+## Running the Application
+
+## Data Processing
+To easily download and process all needed data run the `prepare_all_data.py` script. This script downloads all training, validation and test images listed in the corresponding variables in the script. Fill the `<mode>_files` list with the names of the frames to use and the `<mode>_dirs` with the corresponding directory under https://data.sdss.org/sas/dr17/eboss/photoObj/frames/301/.
+<br><br>
+The script will download all needed channel files and the corresponding calibration objects storing the star and galaxy coordinates. It will then proceed to align the channels of each image and determine the star and galaxy coordinates for them. The result of this step is then stored under `/data/processed/`. After that the script splits the images into 64x64 pixel patches containing the respective stars and galaxies. The patches will be stored under `/data/train/`, `/data/validation/`, or `/data/test/` depending on the list they were stored in in the script. The patches are named after their index.
