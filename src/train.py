@@ -18,7 +18,12 @@ def train():
     torch.manual_seed(42)
 
     logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
-    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+    if torch.cuda.is_available():
+        device = torch.device("cuda")
+    elif torch.backends.mps.is_available():
+        device = torch.device("mps")
+    else:
+        device = torch.device("cpu")
     logging.info(f"Using device {device}")
 
     # Define hyperparameters
