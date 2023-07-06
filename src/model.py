@@ -68,7 +68,7 @@ class UNet(nn.Module):
 
 
 # Load pre-trained ResNet model for gradient computation
-resnet = models.resnet50(pretrained=True)
+resnet = models.resnet50(weights=models.ResNet50_Weights.IMAGENET1K_V1)
 resnet = nn.Sequential(
     *list(resnet.children())[:-1]
 )  # Remove the last fully connected layer
