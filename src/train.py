@@ -10,7 +10,11 @@ from torch.utils.data import DataLoader
 import wandb
 from eval import evaluate
 from model import UNet, UNetWithGradCAM
-from utils.data_loading import BuildingsDataset
+from utils.data_loading import (
+    BuildingsDataset,
+    get_training_augmentation,
+    get_validation_augmentation,
+)
 
 
 def train():
@@ -118,8 +122,12 @@ if __name__ == "__main__":
     x_valid_dir = os.path.join(DATA_DIR, "validation/")
 
     # Get train and val dataset instances
-    train_dataset = BuildingsDataset(x_train_dir)
-    valid_dataset = BuildingsDataset(x_valid_dir)
+    train_dataset = BuildingsDataset(
+        x_train_dir, augmentation=get_training_augmentation()
+    )
+    valid_dataset = BuildingsDataset(
+        x_valid_dir, augmentation=get_validation_augmentation()
+    )
 
     train_loader = DataLoader(train_dataset, batch_size=1, shuffle=True, num_workers=4)
     valid_loader = DataLoader(valid_dataset, batch_size=1, shuffle=False, num_workers=4)

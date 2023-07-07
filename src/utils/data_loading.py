@@ -1,7 +1,33 @@
 import os
 
+import albumentations as album
 import scipy.io
 import torch
+
+
+def get_training_augmentation():
+    train_transform = [
+        # album.RandomCrop(height=32, width=32, always_apply=True),
+        album.OneOf(
+            [
+                album.HorizontalFlip(p=1),
+                album.VerticalFlip(p=1),
+                album.RandomRotate90(p=1),
+            ],
+            p=0.75,
+        ),
+    ]
+    return album.Compose(train_transform)
+
+
+def get_validation_augmentation():
+    # Add sufficient padding to ensure image is divisible by 32
+    test_transform = [
+        album.PadIfNeeded(
+            min_height=96, min_width=96, always_apply=True, border_mode=0
+        ),
+    ]
+    return album.Compose(test_transform)
 
 
 class BuildingsDataset(torch.utils.data.Dataset):
