@@ -13,7 +13,6 @@ from model import UNet, UNetWithGradCAM
 from utils.data_loading import (
     BuildingsDataset,
     get_training_augmentation,
-    get_validation_augmentation,
 )
 
 
@@ -41,14 +40,6 @@ def train():
     # Define loss function and optimizer
     criterion = nn.CrossEntropyLoss()
     optimizer = optim.Adam(model.parameters(), lr=learning_rate)
-
-    # Load and preprocess your dataset
-    train_loader = DataLoader(
-        train_dataset, batch_size=batch_size, shuffle=True, num_workers=4
-    )
-    valid_loader = DataLoader(
-        valid_dataset, batch_size=batch_size, shuffle=False, num_workers=4
-    )
 
     # Initialize W&B
     wandb.init(
@@ -122,12 +113,8 @@ if __name__ == "__main__":
     x_valid_dir = os.path.join(DATA_DIR, "validation/")
 
     # Get train and val dataset instances
-    train_dataset = BuildingsDataset(
-        x_train_dir, augmentation=get_training_augmentation()
-    )
-    valid_dataset = BuildingsDataset(
-        x_valid_dir, augmentation=get_validation_augmentation()
-    )
+    train_dataset = BuildingsDataset(x_train_dir)
+    valid_dataset = BuildingsDataset(x_valid_dir)
 
     train_loader = DataLoader(train_dataset, batch_size=1, shuffle=True, num_workers=4)
     valid_loader = DataLoader(valid_dataset, batch_size=1, shuffle=False, num_workers=4)

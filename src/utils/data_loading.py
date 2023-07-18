@@ -7,7 +7,6 @@ import torch
 
 def get_training_augmentation():
     train_transform = [
-        # album.RandomCrop(height=32, width=32, always_apply=True),
         album.OneOf(
             [
                 album.HorizontalFlip(p=1),
@@ -18,16 +17,6 @@ def get_training_augmentation():
         ),
     ]
     return album.Compose(train_transform)
-
-
-def get_validation_augmentation():
-    # Add sufficient padding to ensure image is divisible by 32
-    test_transform = [
-        album.PadIfNeeded(
-            min_height=96, min_width=96, always_apply=True, border_mode=0
-        ),
-    ]
-    return album.Compose(test_transform)
 
 
 class BuildingsDataset(torch.utils.data.Dataset):
