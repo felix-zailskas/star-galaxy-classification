@@ -84,19 +84,3 @@ class UNetWithGradCAM(nn.Module):
         features = self.unet.feature_maps  # Intermediate feature maps from the U-Net
         output = self.unet(x)
         return output, features
-
-
-# summary(UNet(5, 3), input_size=(1, 5, 64, 64), col_names=["input_size", "output_size", "num_params"])
-# summary(
-#     UNetWithGradCAM(UNet(5, 3)),
-#     input_size=(1, 5, 64, 64),
-#     col_names=["input_size", "output_size", "num_params"],
-# )
-
-# curr_data = scipy.io.loadmat(f"./data/0.mat")
-# img = curr_data["patch"]
-# stars = curr_data["stars"]
-# gals = curr_data["galaxies"]
-
-# plt.imshow(img[:, :, :3])
-# plt.show()
