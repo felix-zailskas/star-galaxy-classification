@@ -1,11 +1,10 @@
+#!/bin/bash
+
 # set to download specific image
-# image_dir="8162/6/"
-# image_name="008162-6-0080"
-# star_galaxy_name="008162-6"
-image_dir="3918/3/"
-image_name="003918-3-0213"
-star_galaxy_name="003918-3"
-data_dir="../../data/$image_name"
+image_dir=$1
+image_name=$2
+star_galaxy_name=$3
+data_dir="$4$image_name"
 
 mkdir $data_dir
 
