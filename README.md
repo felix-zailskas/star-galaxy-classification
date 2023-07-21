@@ -1,4 +1,4 @@
-# star-galaxy-classification
+# Classification of Stars and Galaxies using a UNet Architechture
 
 
 ## Dataset
