@@ -12,7 +12,7 @@ abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
 os.chdir(dname)
 
-logger = Logger()
+logger = Logger("Data Preparation")
 
 train_files = [
     "001043-5-0025",
@@ -36,11 +36,18 @@ train_dirs = [
     "2029/6/",
     "1035/6/",
 ]
+
 validation_files = ["003918-3-0213", "007264-3-0111"]
 validation_dirs = ["3918/3/", "7264/3/"]
+
 test_files = ["008162-6-0080"]
 test_dirs = ["8162/6/"]
+
 data_dir = "../data/"
+
+logger.info(
+    f"Downloading ({len(train_files)}) training files, ({len(validation_files)}) validation files, and ({len(test_files)}) testing files from data.sdss.org into `{data_dir}`"
+)
 
 # download all data
 for file_name, img_dir in (
@@ -48,39 +55,46 @@ for file_name, img_dir in (
     + list(zip(validation_files, validation_dirs))
     + list(zip(test_files, test_dirs))
 ):
-    if Path(f"../data/{file_name}").exists():
+    if Path().joinpath(data_dir, file_name).exists():
+        logger.info(f"`{file_name}` skipped as it exists locally...")
         continue
+    logger.info(f"downloading `{file_name}`...")
     subprocess.check_call(
-        "./downloader.sh %s %s %s %s"
+        "scripts/downloader.sh %s %s %s %s"
         % (str(img_dir), str(file_name), str(file_name.rsplit("-", 1)[0]), data_dir),
         shell=True,
     )
 
+logger.info("All files downloaded. Beginning image alignment.")
 
 # process the data for alignment and star and galaxy coordinate extraction
 for file_name in train_files + validation_files + test_files:
-    Path("../data/processed/").mkdir(exist_ok=True, parents=True)
-    if Path(f"../data/processed/{file_name}.mat").exists():
+    Path(f"{data_dir}processed/").mkdir(exist_ok=True, parents=True)
+    if Path(f"{data_dir}processed/{file_name}.mat").exists():
+        logger.info(f"`{file_name}` skipped as it exists locally...")
         continue
     calib_obj_name = file_name.rsplit("-", 1)[0]
     file_paths = [
-        f"../data/{file_name}/frame-i-{file_name}.fits.bz2",
-        f"../data/{file_name}/frame-r-{file_name}.fits.bz2",
-        f"../data/{file_name}/frame-g-{file_name}.fits.bz2",
-        f"../data/{file_name}/frame-u-{file_name}.fits.bz2",
-        f"../data/{file_name}/frame-z-{file_name}.fits.bz2",
+        f"{data_dir}{file_name}/frame-i-{file_name}.fits.bz2",
+        f"{data_dir}{file_name}/frame-r-{file_name}.fits.bz2",
+        f"{data_dir}{file_name}/frame-g-{file_name}.fits.bz2",
+        f"{data_dir}{file_name}/frame-u-{file_name}.fits.bz2",
+        f"{data_dir}{file_name}/frame-z-{file_name}.fits.bz2",
     ]
-    star_path = f"../data/{file_name}/calibObj-{calib_obj_name}-star.fits.gz"
-    galaxy_path = f"../data/{file_name}/calibObj-{calib_obj_name}-gal.fits.gz"
+    star_path = f"{data_dir}{file_name}/calibObj-{calib_obj_name}-star.fits.gz"
+    galaxy_path = f"{data_dir}{file_name}/calibObj-{calib_obj_name}-gal.fits.gz"
 
+    logger.info(f"aligning channels of`{file_name}`...")
     image, stars, galaxies = align_channels_stars_galaxies(
         file_paths, star_path, galaxy_path
     )
+    logger.info(f"saving `{file_name}`...")
     scipy.io.savemat(
         f"../data/processed/{file_name}.mat",
         {"image": image, "stars": stars, "galaxies": galaxies},
     )
 
 
+logger.info("All files aligned. Creating dataset splits.")
 # create actual train validation and test sets
 create_dataset_split(train_files, validation_files, test_files)

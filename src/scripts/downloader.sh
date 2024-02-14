@@ -23,5 +23,5 @@ echo frame-irg-$image_name.jpg    >> spec-list.txt
 
 # All images for these stars
 wget -i spec-list.txt -r --no-parent -nd -B "https://data.sdss.org/sas/dr17/eboss/photoObj/frames/301/$image_dir" -P $data_dir
-
+# delete temporary file needed for the downloading interface
 rm spec-list.txt

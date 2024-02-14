@@ -44,7 +44,7 @@ class FileOutFormatter(logging.Formatter):
 
 
 class Logger(logging.getLoggerClass()):
-    def __init__(self, name, log_dir=None):
+    def __init__(self, name: str, log_dir: str = None):
         # Create custom logger logging all five levels
         super().__init__(name)
         self.setLevel(logging.DEBUG)
