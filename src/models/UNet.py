@@ -44,13 +44,12 @@ class UNet(nn.Module):
         assert (
             1 <= depth <= 4
         ), "UNet cannot must have depth of at least 1 and at most 4"
-
         self.kernel_size = pool_kernel_size
         self.down_samplers = []
         self.up_samplers = []
 
         self.down_samplers.append(ConvBlock(in_channels, channel_multiple))
-        for _ in range(depth):
+        for _ in range(depth - 1):
             self.down_samplers.append(ConvBlock(channel_multiple, channel_multiple * 2))
             channel_multiple *= 2
 
@@ -58,31 +57,35 @@ class UNet(nn.Module):
         channel_multiple *= 2
 
         for _ in range(depth):
-            self.up_samplers.append(ConvBlock(channel_multiple, channel_multiple / 2))
-            channel_multiple /= 2
+            self.up_samplers.append(
+                ConvBlock(
+                    channel_multiple + (channel_multiple // 2), channel_multiple // 2
+                )
+            )
+            channel_multiple = channel_multiple // 2
 
         self.output = nn.Conv2d(
             channel_multiple, num_classes, kernel_size=conv_kernel_size
         )
 
     def forward(self, x):
-        sample_maps = []
+        down_sample_maps = []
 
         for i, down_sampler in enumerate(self.down_samplers):
             if i > 0:
                 x = nn.MaxPool2d(kernel_size=self.kernel_size)(x)
             x = down_sampler(x)
-            sample_maps.append(x)
+            down_sample_maps.append(x)
 
         x = self.center(nn.MaxPool2d(kernel_size=self.kernel_size)(x))
-        sample_maps.append(x)
+        # sample_maps.append(x)
 
         for i, up_sampler in enumerate(self.up_samplers):
             up_sampled_img = nn.Upsample(
                 scale_factor=self.kernel_size, mode="bilinear"
             )(x)
-            down_sampled_img = sample_maps[i - 1]
-            x = torch.cat(up_sampled_img, down_sampled_img, dim=1)
+            down_sampled_img = down_sample_maps[-(i + 1)]
+            x = torch.cat([up_sampled_img, down_sampled_img], dim=1)
             x = up_sampler(x)
 
         output = self.output(x)

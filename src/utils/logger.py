@@ -13,17 +13,16 @@ class StdOutFormatter(logging.Formatter):
     red = "\x1b[31;20m"
     bold_red = "\x1b[31;1m"
     reset = "\x1b[0m"
-    fmt = "%(asctime)s | %(levelname)8s | %(filename)s:%(lineno)d | %(message)s"
 
-    FORMATS = {
-        logging.DEBUG: grey + fmt + reset,
-        logging.INFO: blue + fmt + reset,
-        logging.WARNING: yellow + fmt + reset,
-        logging.ERROR: red + fmt + reset,
-        logging.CRITICAL: bold_red + fmt + reset,
-    }
-
-    def __init__(self):
+    def __init__(self, logger_name):
+        self.fmt = "%(asctime)s | %(levelname)8s | {} | %(message)s".format(logger_name)
+        self.FORMATS = {
+            logging.DEBUG: self.grey + self.fmt + self.reset,
+            logging.INFO: self.blue + self.fmt + self.reset,
+            logging.WARNING: self.yellow + self.fmt + self.reset,
+            logging.ERROR: self.red + self.fmt + self.reset,
+            logging.CRITICAL: self.bold_red + self.fmt + self.reset,
+        }
         logging.Formatter.__init__(self, self.fmt)
 
     def format(self, record):
@@ -33,9 +32,8 @@ class StdOutFormatter(logging.Formatter):
 
 
 class FileOutFormatter(logging.Formatter):
-    fmt = "%(asctime)s | %(levelname)8s | %(filename)s:%(lineno)d | %(message)s"
-
-    def __init__(self):
+    def __init__(self, logger_name):
+        self.fmt = "%(asctime)s | %(levelname)8s | {} | %(message)s".format(logger_name)
         logging.Formatter.__init__(self, self.fmt)
 
     def format(self, record):
@@ -52,7 +50,7 @@ class Logger(logging.getLoggerClass()):
         # Create stream handler for logging to stdout (log all five levels)
         self.stdout_handler = logging.StreamHandler(sys.stdout)
         self.stdout_handler.setLevel(logging.DEBUG)
-        self.stdout_handler.setFormatter(StdOutFormatter())
+        self.stdout_handler.setFormatter(StdOutFormatter(logger_name=self.name))
         self.enable_console_output()
 
         # Add file handler only if the log directory was specified
@@ -86,7 +84,7 @@ class Logger(logging.getLoggerClass()):
         # Create file handler for logging to a file (log all five levels)
         self.file_handler = logging.FileHandler(log_file)
         self.file_handler.setLevel(logging.DEBUG)
-        self.file_handler.setFormatter(FileOutFormatter())
+        self.file_handler.setFormatter(FileOutFormatter(logger_name=self.name))
         self.addHandler(self.file_handler)
 
     def has_console_handler(self):
