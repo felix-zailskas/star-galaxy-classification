@@ -4,8 +4,8 @@ from pathlib import Path
 
 import scipy
 
-from alignment import align_channels_stars_galaxies
-from preparation import create_dataset_split
+from utils.data_alignment import align_channels_stars_galaxies
+from utils.data_preprocessing import create_dataset_split
 
 abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
@@ -48,7 +48,7 @@ for file_name, img_dir in (
     if Path(f"../data/{file_name}").exists():
         continue
     subprocess.check_call(
-        "./data_acquisition/downloader.sh %s %s %s %s"
+        "./downloader.sh %s %s %s %s"
         % (str(img_dir), str(file_name), str(file_name.rsplit("-", 1)[0]), data_dir),
         shell=True,
     )

@@ -1,4 +1,3 @@
-# Importing the required libraries
 from typing import List, Tuple
 
 import cv2

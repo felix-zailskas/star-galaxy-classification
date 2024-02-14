@@ -5,15 +5,12 @@ import sys
 import torch
 import torch.nn as nn
 import torch.optim as optim
+import wandb
 from torch.utils.data import DataLoader
 
-import wandb
 from eval import evaluate
-from model import UNet, UNetWithGradCAM
-from utils.data_loading import (
-    BuildingsDataset,
-    get_training_augmentation,
-)
+from models.UNet import UNet, UNetWithGradCAM
+from utils.dataset import BuildingsDataset, get_training_augmentation
 
 
 def train():
