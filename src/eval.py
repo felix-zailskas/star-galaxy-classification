@@ -3,11 +3,11 @@ import os
 
 import torch
 import torch.nn as nn
+import wandb
 from torch.utils.data import DataLoader
 
-import wandb
-from model import UNet, UNetWithGradCAM
-from utils.data_loading import BuildingsDataset
+from models.UNet import UNet, UNetWithGradCAM
+from utils.dataset import BuildingsDataset
 
 
 def evaluate(model, criterion, device, test_loader):
