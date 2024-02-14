@@ -6,10 +6,13 @@ import scipy
 
 from utils.data_alignment import align_channels_stars_galaxies
 from utils.data_preprocessing import create_dataset_split
+from utils.logger import Logger
 
 abspath = os.path.abspath(__file__)
 dname = os.path.dirname(abspath)
 os.chdir(dname)
+
+logger = Logger()
 
 train_files = [
     "001043-5-0025",

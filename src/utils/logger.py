@@ -43,7 +43,7 @@ class FileOutFormatter(logging.Formatter):
         return formatter.format(record)
 
 
-class CustomLogger(logging.getLoggerClass()):
+class Logger(logging.getLoggerClass()):
     def __init__(self, name, log_dir=None):
         # Create custom logger logging all five levels
         super().__init__(name)
